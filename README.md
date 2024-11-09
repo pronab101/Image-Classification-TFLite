@@ -25,17 +25,8 @@ This project is designed for **image classification** using a Convolutional Neur
 ## Dataset
 The dataset should be structured as follows:
 
-dataset/
-│
-├── train/
-│   ├── class1/
-│   ├── class2/
-│   └── class3/
-│
-└── validation/
-    ├── class1/
-    ├── class2/
-    └── class3/
+<img width="173" alt="dataset_structure" src="https://github.com/user-attachments/assets/5c3a3d87-ac46-4815-a118-6a9d0c3dfaed">
+
 
 Each class directory contains images belonging to that category.
 
@@ -82,7 +73,3 @@ Contributions are welcome! If you'd like to improve this project, please fork th
 
 ## License
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
-
----
-
-This README template is comprehensive yet concise, providing clear information about the project structure, installation, usage, and additional details to help others understand and use your project.
