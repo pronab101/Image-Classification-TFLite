@@ -16,7 +16,11 @@ label_file_path = '/Users/pronabkarmaker/Project/my_model/labels.txt'  # Path to
 # Parameters for data and model
 image_size = (224, 224)  # Image size to which all images will be resized
 batch_size = 32  # Number of samples per gradient update
-num_classes = len(os.listdir(train_dir))  # Number of classes based on folders in the training directory
+class_names = [folder for folder in os.listdir(train_dir) if os.path.isdir(os.path.join(train_dir, folder))]
+num_classes = len(class_names) # Number of classes based on folders in the training directory
+print(f"Detected classes: {class_names}")
+print(f"Number of classes: {num_classes}")
+
 
 # Set up data augmentation and preprocessing for training and validation sets
 train_datagen = ImageDataGenerator(rescale=1./255)  # Rescale pixel values between 0 and 1 for training data
@@ -38,6 +42,8 @@ validation_generator = val_datagen.flow_from_directory(
     class_mode='categorical'  # Categorical labels for validation
 )
 
+
+
 # Define a simple CNN model
 model = tf.keras.models.Sequential([
     tf.keras.layers.Conv2D(32, (3, 3), activation='relu', input_shape=(image_size[0], image_size[1], 3)),  # First convolutional layer
@@ -48,7 +54,7 @@ model = tf.keras.models.Sequential([
     tf.keras.layers.MaxPooling2D(2, 2),  # Third max pooling layer
     tf.keras.layers.Flatten(),  # Flatten layer to convert 3D output to 1D
     tf.keras.layers.Dense(512, activation='relu'),  # Dense (fully connected) layer with 512 neurons
-    tf.keras.layers.Dense(3, activation='softmax')  # Output layer with softmax activation for classification
+    tf.keras.layers.Dense(num_classes, activation='softmax')  # Output layer with softmax activation for classification
 ])
 
 # Compile the model with loss function, optimizer, and metric
@@ -64,6 +70,10 @@ model.fit(
     epochs=10,  # Number of epochs
     validation_data=validation_generator  # Validation data generator
 )
+
+# Evaluate the model on the validation set to get final accuracy
+val_loss, val_accuracy = model.evaluate(validation_generator)
+print(f"Validation Accuracy: {val_accuracy * 100:.2f}%")  # Print validation accuracy in percentage
 
 # Save the model in HDF5 format
 h5_model_path = '/Users/pronabkarmaker/MSC Project/my_model/keras.h5'  # Path to save HDF5 model
